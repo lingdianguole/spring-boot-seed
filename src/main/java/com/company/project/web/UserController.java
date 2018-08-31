@@ -2,7 +2,10 @@ package com.company.project.web;
 
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
+import com.company.project.model.MyPageInfo;
+import com.company.project.model.Phone;
 import com.company.project.model.User;
+import com.company.project.service.PhoneService;
 import com.company.project.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,6 +25,8 @@ import java.util.List;
 public class UserController {
     @Resource
     private UserService userService;
+    @Resource
+    private PhoneService phoneService;
 
     @PostMapping("/add")
     public Result add(User user) {
@@ -77,11 +82,12 @@ public class UserController {
         return ResultGenerator.genSuccessResult(users);
     }
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
-        List<User> list = userService.findAll();
+//        List<User> list = userService.findAll();
+        List<User> list = userService.queryForList();
         PageInfo pageInfo = new PageInfo(list);
-        return ResultGenerator.genSuccessResult(pageInfo);
+        return ResultGenerator.genSuccessResult(new MyPageInfo<>(pageInfo));
     }
 }

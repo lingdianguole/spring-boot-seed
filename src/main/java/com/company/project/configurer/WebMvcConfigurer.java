@@ -116,7 +116,6 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
                     } else {
                         logger.warn("签名认证失败，请求接口：{}，请求IP：{}，请求参数：{}",
                                 request.getRequestURI(), getIpAddress(request), JSON.toJSONString(request.getParameterMap()));
-
                         Result result = new Result();
                         result.setCode(ResultCode.UNAUTHORIZED).setMessage("签名认证失败");
                         responseResult(response, result);

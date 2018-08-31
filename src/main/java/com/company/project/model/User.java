@@ -1,6 +1,7 @@
 package com.company.project.model;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 public class User {
@@ -16,9 +17,19 @@ public class User {
     private String nickName;
 
     private Integer sex;
+    @Transient
+    private List<Phone> phones;
 
     @Column(name = "register_date")
     private Date registerDate;
+
+    public List<Phone> getPhone() {
+        return phones;
+    }
+
+    public void setPhone(List<Phone> phone) {
+        this.phones = phone;
+    }
 
     /**
      * @return id
