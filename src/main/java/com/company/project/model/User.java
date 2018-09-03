@@ -13,12 +13,8 @@ public class User {
 
     private String username;
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "user_authority",
-//            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-//            inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")})
-//    private List<Authority> authorities;
+    @Transient
+    private List<Authority> authorities;
 
     private String password;
 
@@ -30,8 +26,15 @@ public class User {
     private List<Phone> phones;
 
     @Column(name = "register_date")
-    private Date registerDate=new Date();
+    private Date registerDate = new Date();
 
+    public User(String username, String password, String nickName, Integer sex) {
+        this.id = 1;
+        this.username = username;
+        this.password = password;
+        this.nickName = nickName;
+        this.sex = sex;
+    }
 //    public List<Authority> getAuthorities() {
 //        return authorities;
 //    }

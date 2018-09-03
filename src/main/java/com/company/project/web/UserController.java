@@ -5,23 +5,17 @@ import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.jwt.JwtToken;
 import com.company.project.model.MyPageInfo;
+import com.company.project.model.Phone;
 import com.company.project.model.User;
 import com.company.project.service.PhoneService;
 import com.company.project.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-<<<<<<< HEAD
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.jdbc.SQL;
-import org.apache.ibatis.session.SqlSession;
-=======
->>>>>>> bc0e5acaa57d1d7aefc10939352fd7750e5e737a
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.util.StringUtil;
 
 import javax.annotation.Resource;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,23 +54,6 @@ public class UserController {
         return ResultGenerator.genSuccessResult();
     }
 
-<<<<<<< HEAD
-    @PostMapping("/login")
-    public Result login(User user) {
-        if (StringUtils.isEmpty(user.getPassword())) {
-            return ResultGenerator.genFailResult("请输入密码");
-        }
-        User currentuser = userService.findBy("username", user.getUsername());
-        if (currentuser != null && currentuser.getPassword().equals(user.getPassword())) {
-            try {
-                return ResultGenerator.genSuccessResult(JwtToken.createToken(Long.valueOf(currentuser.getId())));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return ResultGenerator.genFailResult("账号或密码错误");
-    }
-
     @GetMapping("/info")  //根据名字来查数据
     public Result info(String nickName) {
 //      User user = userService.findBy("nickName", nickName); //精确查找
@@ -88,11 +65,18 @@ public class UserController {
             return ResultGenerator.genSuccessResult(new ArrayList<>());
         }
         return ResultGenerator.genSuccessResult(user);
-=======
-    public User findByUsername(String userName) {
+    }
+
+    @PostMapping("/getUserByUsername")
+    public Result find(String userName) {
         User user = userService.findBy("username", userName);
+        return ResultGenerator.genSuccessResult(user);
+    }
+
+
+    public User findByNickname(String userName) {
+        User user = userService.findBy("nickName","ygl");
         return user;
->>>>>>> bc0e5acaa57d1d7aefc10939352fd7750e5e737a
     }
 
     @PostMapping("/update")
@@ -118,8 +102,6 @@ public class UserController {
         return ResultGenerator.genSuccessResult(users);
     }
 
-<<<<<<< HEAD
-=======
     @GetMapping("/infocondition")
     public Result info(@RequestParam Condition condition) {
         List<User> users = userService.findByCondition(condition);
@@ -141,9 +123,9 @@ public class UserController {
         return ResultGenerator.genFailResult("账号或密码错误");
     }
 
->>>>>>> bc0e5acaa57d1d7aefc10939352fd7750e5e737a
     @GetMapping("/list")
-    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
+    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer
+            size) {
         PageHelper.startPage(page, size);
 //      List<User> list = userService.findAll();
         List<User> list = userService.queryForList();
