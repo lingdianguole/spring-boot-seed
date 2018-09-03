@@ -3,13 +3,21 @@ package com.company.project.model;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private long id;
 
     private String username;
+
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "user_authority",
+//            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+//            inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")})
+//    private List<Authority> authorities;
 
     private String password;
 
@@ -23,6 +31,14 @@ public class User {
     @Column(name = "register_date")
     private Date registerDate;
 
+//    public List<Authority> getAuthorities() {
+//        return authorities;
+//    }
+//
+//    public void setAuthorities(List<Authority> authorities) {
+//        this.authorities = authorities;
+//    }
+
     public List<Phone> getPhone() {
         return phones;
     }
@@ -31,11 +47,12 @@ public class User {
         this.phones = phone;
     }
 
-    /**
-     * @return id
-     */
-    public Integer getId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     /**
