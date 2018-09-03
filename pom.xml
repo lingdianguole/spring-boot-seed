@@ -11,6 +11,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <jjwt.version>0.9.1</jjwt.version>
     </properties>
 
     <!-- Inherit defaults from Spring Boot -->
@@ -35,7 +36,20 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
         <!--常用库依赖-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
@@ -50,6 +64,8 @@
             <artifactId>guava</artifactId>
             <version>23.0</version>
         </dependency>
+
+
         <!--MySQL JDBC驱动-->
         <dependency>
             <groupId>mysql</groupId>
