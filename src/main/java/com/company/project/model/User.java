@@ -1,5 +1,6 @@
 package com.company.project.model;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -21,7 +22,7 @@ public class User {
     private List<Phone> phones;
 
     @Column(name = "register_date")
-    private Date registerDate;
+    private Date registerDate=new Date();
 
     public List<Phone> getPhone() {
         return phones;

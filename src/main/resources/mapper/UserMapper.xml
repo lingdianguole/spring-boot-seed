@@ -16,11 +16,17 @@
         <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
         <result column="sex" jdbcType="INTEGER" property="sex"/>
         <result column="register_date" jdbcType="TIMESTAMP" property="registerDate"/>
-        <collection property="phones" javaType="ArrayList"
+        <collection property="phones"
                     ofType="com.company.project.model.Phone">
             <id column="phoneid" jdbcType="BIGINT" property="phoneid"/>
             <result column="phonenum" jdbcType="BIGINT" property="phonenum"/>
-            <result column="userid" jdbcType="INTEGER" property="id"/>
+            <result column="userid" jdbcType="INTEGER" property="userid"/>
         </collection>
     </resultMap>
+    <select id="queryForList" resultMap="queryForListMap">
+        SELECT * FROM user u LEFT join phone p ON u.id=p.userid
+    </select>
+    <select id="queryNickNameLike" resultMap="BaseResultMap">
+        SELECT  * FROM  user WHERE  nick_name LIKE "%"#{nickName}"%"
+    </select>
 </mapper>

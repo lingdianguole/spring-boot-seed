@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface UserService extends Service<User> {
     List<User> queryForList();//获取所有
+    User queryNickNameLike(String username); //模糊查询
 }
