@@ -24,7 +24,7 @@ public class User {
     private List<Phone> phones;
 
     @Column(name = "register_date")
-    private Date registerDate = new Date();
+    private Date registerDate;
 
     public List<Authority> getAuthorities() {
         return authorities;

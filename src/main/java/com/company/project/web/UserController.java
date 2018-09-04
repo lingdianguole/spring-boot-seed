@@ -78,13 +78,16 @@ public class UserController {
 
     @PostMapping("/getUserByUsername")
     public Result find(String username) {
-        User user = userService.findBy("username", username);
+      User user = userService.findBy("username", username);
+//        Condition condition = new Condition(User.class);
+//        condition.createCriteria().andEqualTo("username", username);
+//        List<User> user = userService.findByCondition(condition);
         return ResultGenerator.genSuccessResult(user);
     }
 
 
     public User findByUsername(@RequestParam String username) {
-//        User user = userService.findBy("username", username);
+//      User user = userService.findBy("username", username);
         User user = userService.findById(1);
         Condition condition = new Condition(Authority.class);
         condition.createCriteria().andCondition("id=" + user.getId());
