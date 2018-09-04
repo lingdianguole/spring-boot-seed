@@ -1,39 +1,39 @@
 package com.company.project.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.List;
 
-@Entity
-@Table(name = "authority")
 public class Authority {
-
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "authority_seq")
-    @SequenceGenerator(name = "authority_seq", sequenceName = "authority_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", length = 50)
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private AuthorityName name;
+    private String name;
 
-
+    /**
+     * @return id
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * @param id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    public AuthorityName getName() {
+    /**
+     * @return name
+     */
+    public String getName() {
         return name;
     }
 
-    public void setName(AuthorityName name) {
+    /**
+     * @param name
+     */
+    public void setName(String name) {
         this.name = name;
     }
-
 }

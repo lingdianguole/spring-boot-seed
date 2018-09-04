@@ -4,13 +4,16 @@ import com.alibaba.druid.util.StringUtils;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.jwt.JwtToken;
+import com.company.project.model.Authority;
 import com.company.project.model.MyPageInfo;
 import com.company.project.model.Phone;
 import com.company.project.model.User;
+import com.company.project.service.AuthorityService;
 import com.company.project.service.PhoneService;
 import com.company.project.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.util.StringUtil;
@@ -29,11 +32,17 @@ public class UserController {
     private UserService userService;
     @Resource
     private PhoneService phoneService;
+    @Resource
+    private AuthorityService authorService;
 
-    @PostMapping("/add")
+    @PostMapping("/register")
     public Result add(User user) throws InterruptedException {
+        //把密码加密
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodePassword = encoder.encode(user.getPassword());
+        user.setPassword(encodePassword);
         userService.save(user);
-        return ResultGenerator.genSuccessResult();
+        return ResultGenerator.genSuccessResult("注册成功");
     }
 
     @PostMapping("/addAll")
@@ -74,8 +83,13 @@ public class UserController {
     }
 
 
-    public User findByNickname(String userName) {
-        User user = userService.findBy("nickName","ygl");
+    public User findByUsername(String username) {
+        User user = userService.findBy("username", username);
+//        User user = userService.findById(1);
+        Condition condition = new Condition(Authority.class);
+        condition.createCriteria().andCondition("id=" + user.getId());
+        List<Authority> authorities = authorService.findByCondition(condition);
+        user.setAuthorities(authorities);
         return user;
     }
 

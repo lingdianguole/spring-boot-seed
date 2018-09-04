@@ -1,16 +1,14 @@
 package com.company.project.model;
 
-import java.text.DateFormat;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+    private Integer id;
+    @Column(name = "username")
     private String username;
 
     @Transient
@@ -28,20 +26,13 @@ public class User {
     @Column(name = "register_date")
     private Date registerDate = new Date();
 
-    public User(String username, String password, String nickName, Integer sex) {
-        this.id = 1;
-        this.username = username;
-        this.password = password;
-        this.nickName = nickName;
-        this.sex = sex;
+    public List<Authority> getAuthorities() {
+        return authorities;
     }
-//    public List<Authority> getAuthorities() {
-//        return authorities;
-//    }
-//
-//    public void setAuthorities(List<Authority> authorities) {
-//        this.authorities = authorities;
-//    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
+    }
 
     public List<Phone> getPhone() {
         return phones;
@@ -51,17 +42,10 @@ public class User {
         this.phones = phone;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
-     * @param id
-     */
     public void setId(Integer id) {
         this.id = id;
     }

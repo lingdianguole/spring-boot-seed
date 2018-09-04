@@ -12,31 +12,31 @@ import java.util.Date;
  */
 public class JwtUser implements UserDetails {
 
-    private final Long id;
+    private final Integer id;
     private final String username;
     private final String password;
-//  private final Collection<? extends GrantedAuthority> authorities;
+    private final Collection<? extends GrantedAuthority> authorities;
     private final boolean enabled;
     private final Date lastPasswordResetDate;
 
     public JwtUser(
-            Long id,
+            Integer id,
             String username,
             String password,
-//            Collection<? extends GrantedAuthority> authorities,
+            Collection<? extends GrantedAuthority> authorities,
             boolean enabled,
             Date lastPasswordResetDate
     ) {
         this.id = id;
         this.username = username;
         this.password = password;
-//        this.authorities = authorities;
+        this.authorities = authorities;
         this.enabled = enabled;
         this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
     @JsonIgnore
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -63,21 +63,16 @@ public class JwtUser implements UserDetails {
         return true;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
     @JsonIgnore
     @Override
     public String getPassword() {
         return password;
     }
 
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return authorities;
-//    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
 
     @Override
     public boolean isEnabled() {
