@@ -8,7 +8,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "username")
+
     private String username;
 
     @Transient
@@ -50,18 +50,20 @@ public class User {
         this.id = id;
     }
 
-    /**
-     * @return username
-     */
     public String getUsername() {
         return username;
     }
 
-    /**
-     * @param username
-     */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
     }
 
     /**

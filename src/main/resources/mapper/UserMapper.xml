@@ -3,7 +3,7 @@
 <mapper namespace="com.company.project.dao.UserMapper">
     <resultMap id="BaseResultMap" type="com.company.project.model.User">
         <id column="id" jdbcType="INTEGER" property="id" javaType="int"/>
-        <result column="username" jdbcType="VARCHAR" property="username" javaType="String"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
         <result column="sex" jdbcType="INTEGER" property="sex"/>

@@ -49,7 +49,6 @@ public class MybatisConfigurer {
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactoryBean");
         mapperScannerConfigurer.setBasePackage(MAPPER_PACKAGE);
-
         //配置通用Mapper，详情请查阅官方文档
         Properties properties = new Properties();
         properties.setProperty("mappers", MAPPER_INTERFACE_REFERENCE);

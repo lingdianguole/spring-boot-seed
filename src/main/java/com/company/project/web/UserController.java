@@ -63,13 +63,13 @@ public class UserController {
         return ResultGenerator.genSuccessResult();
     }
 
-    @GetMapping("/info")  //根据名字来查数据
+    @PostMapping("/info")  //根据名字来查数据
     public Result info(String nickName) {
-//      User user = userService.findBy("nickName", nickName); //精确查找
-//      User user = userService.queryNickNameLike(nickName);
-        Condition condition = new Condition(User.class);
-        condition.createCriteria().andLike("nickName", '%' + nickName + '%');
-        List<User> user = userService.findByCondition(condition);
+        User user = userService.findBy("nickName", nickName); //精确查找
+//        User user = userService.queryNickNameLike(nickName);
+//        Condition condition = new Condition(User.class);
+//        condition.createCriteria().andLike("nickName", '%' + nickName + '%');
+//        List<User> user = userService.findByCondition(condition);
         if (user == null) {
             return ResultGenerator.genSuccessResult(new ArrayList<>());
         }
@@ -77,15 +77,15 @@ public class UserController {
     }
 
     @PostMapping("/getUserByUsername")
-    public Result find(String userName) {
-        User user = userService.findBy("username", userName);
+    public Result find(String username) {
+        User user = userService.findBy("username", username);
         return ResultGenerator.genSuccessResult(user);
     }
 
 
-    public User findByUsername(String username) {
-        User user = userService.findBy("username", username);
-//        User user = userService.findById(1);
+    public User findByUsername(@RequestParam String username) {
+//        User user = userService.findBy("username", username);
+        User user = userService.findById(1);
         Condition condition = new Condition(Authority.class);
         condition.createCriteria().andCondition("id=" + user.getId());
         List<Authority> authorities = authorService.findByCondition(condition);
@@ -99,7 +99,7 @@ public class UserController {
         return ResultGenerator.genSuccessResult();
     }
 
-    @GetMapping("/detail")
+    @PostMapping("/detail")
     public Result detail(@RequestParam Integer id) {
         User user = userService.findById(id);
         Condition condition = new Condition(Phone.class);
@@ -110,13 +110,13 @@ public class UserController {
         return ResultGenerator.genSuccessResult(user);
     }
 
-    @GetMapping("/detailmany")
+    @PostMapping("/detailmany")
     public Result detail(@RequestParam String ids) {
         List<User> users = userService.findByIds(ids);
         return ResultGenerator.genSuccessResult(users);
     }
 
-    @GetMapping("/infocondition")
+    @PostMapping("/infocondition")
     public Result info(@RequestParam Condition condition) {
         List<User> users = userService.findByCondition(condition);
         return ResultGenerator.genSuccessResult(users);
@@ -137,7 +137,7 @@ public class UserController {
         return ResultGenerator.genFailResult("账号或密码错误");
     }
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer
             size) {
         PageHelper.startPage(page, size);
