@@ -1,5 +1,10 @@
 package com.company.project.model;
 
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +18,7 @@ public class User {
 
     @Transient
     private List<Authority> authorities;
-
+    @JsonIgnore
     private String password;
 
     @Column(name = "nick_name")
@@ -22,9 +27,20 @@ public class User {
     private Integer sex;
     @Transient
     private List<Phone> phones;
+    private String test;
 
     @Column(name = "register_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
+
     private Date registerDate;
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
 
     public List<Authority> getAuthorities() {
         return authorities;
@@ -38,8 +54,8 @@ public class User {
         return phones;
     }
 
-    public void setPhone(List<Phone> phone) {
-        this.phones = phone;
+    public void setPhone(List<Phone> phones) {
+        this.phones = phones;
     }
 
     public Integer getId() {
@@ -58,13 +74,6 @@ public class User {
         this.username = username;
     }
 
-    public List<Phone> getPhones() {
-        return phones;
-    }
-
-    public void setPhones(List<Phone> phones) {
-        this.phones = phones;
-    }
 
     /**
      * @return password

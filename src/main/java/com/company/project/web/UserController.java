@@ -1,6 +1,7 @@
 package com.company.project.web;
 
 import com.alibaba.druid.util.StringUtils;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.jwt.JwtToken;
@@ -20,6 +21,7 @@ import tk.mybatis.mapper.util.StringUtil;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,6 +43,7 @@ public class UserController {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodePassword = encoder.encode(user.getPassword());
         user.setPassword(encodePassword);
+        user.setRegisterDate(new Date());
         userService.save(user);
         return ResultGenerator.genSuccessResult("注册成功");
     }
@@ -76,19 +79,21 @@ public class UserController {
         return ResultGenerator.genSuccessResult(user);
     }
 
+    @RequestMapping("/index")
+    public String index() {
+        System.out.println("Looking in the index controller.........");
+        return "index.html";
+    }
+
     @PostMapping("/getUserByUsername")
     public Result find(String username) {
-      User user = userService.findBy("username", username);
-//        Condition condition = new Condition(User.class);
-//        condition.createCriteria().andEqualTo("username", username);
-//        List<User> user = userService.findByCondition(condition);
+        User user = userService.findBy("username", username);
         return ResultGenerator.genSuccessResult(user);
     }
 
 
     public User findByUsername(@RequestParam String username) {
-//      User user = userService.findBy("username", username);
-        User user = userService.findById(1);
+        User user = userService.findBy("username", username);
         Condition condition = new Condition(Authority.class);
         condition.createCriteria().andCondition("id=" + user.getId());
         List<Authority> authorities = authorService.findByCondition(condition);
@@ -144,7 +149,6 @@ public class UserController {
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer
             size) {
         PageHelper.startPage(page, size);
-//      List<User> list = userService.findAll();
         List<User> list = userService.queryForList();
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(new MyPageInfo<>(pageInfo));
