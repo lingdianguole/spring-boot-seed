@@ -27,19 +27,19 @@ public class User {
     private Integer sex;
     @Transient
     private List<Phone> phones;
-    private String test;
 
     @Column(name = "register_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
 
     private Date registerDate;
+    private Date updateDate;
 
-    public String getTest() {
-        return test;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
-    public void setTest(String test) {
-        this.test = test;
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
     public List<Authority> getAuthorities() {

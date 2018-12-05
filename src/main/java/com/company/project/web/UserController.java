@@ -9,11 +9,13 @@ import com.company.project.model.Authority;
 import com.company.project.model.MyPageInfo;
 import com.company.project.model.Phone;
 import com.company.project.model.User;
+import com.company.project.security.JwtTokenUtil;
 import com.company.project.service.AuthorityService;
 import com.company.project.service.PhoneService;
 import com.company.project.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Condition;
@@ -36,6 +38,8 @@ public class UserController {
     private PhoneService phoneService;
     @Resource
     private AuthorityService authorService;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/register")
     public Result add(User user) throws InterruptedException {
@@ -44,6 +48,7 @@ public class UserController {
         String encodePassword = encoder.encode(user.getPassword());
         user.setPassword(encodePassword);
         user.setRegisterDate(new Date());
+        user.setUpdateDate(new Date());
         userService.save(user);
         return ResultGenerator.genSuccessResult("注册成功");
     }
@@ -139,7 +144,10 @@ public class UserController {
             return ResultGenerator.genFailResult("请输入密码");
         }
         User currentUser = userService.findBy("username", user.getUsername());
-        if (currentUser != null && user.getPassword().equals(currentUser.getPassword())) {
+        if (currentUser != null && user.getPassword().equals("")) {
+//            final String token = jwtTokenUtil.generateToken(currentUser);
+            currentUser.setUpdateDate(new Date()); //更新登录时间
+            userService.update(currentUser);
             return ResultGenerator.genSuccessResult("登录成功");
         }
         return ResultGenerator.genFailResult("账号或密码错误");
