@@ -144,8 +144,9 @@ public class UserController {
             return ResultGenerator.genFailResult("请输入密码");
         }
         User currentUser = userService.findBy("username", user.getUsername());
-        if (currentUser != null && user.getPassword().equals("")) {
-//            final String token = jwtTokenUtil.generateToken(currentUser);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (currentUser != null && encoder.matches(user.getPassword(), currentUser.getPassword())) {
+//          final String token = jwtTokenUtil.generateToken(currentUser);
             currentUser.setUpdateDate(new Date()); //更新登录时间
             userService.update(currentUser);
             return ResultGenerator.genSuccessResult("登录成功");
