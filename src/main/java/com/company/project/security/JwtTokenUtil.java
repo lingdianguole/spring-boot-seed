@@ -63,8 +63,8 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private Boolean ignoreTokenExpiration(String token) {
-        // here you specify tokens, for that the expiration is ignored
-        return false;
+        // 是否忽略token过期
+        return true;
     }
 
     public String generateToken(UserDetails userDetails) {
@@ -74,13 +74,13 @@ public class JwtTokenUtil implements Serializable {
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         final Date createdDate = clock.now();
-        final Date expirationDate = calculateExpirationDate(createdDate);
+//        final Date expirationDate = calculateExpirationDate(createdDate);         // 是否忽略token过期
 
         return Jwts.builder()
             .setClaims(claims)
             .setSubject(subject)
             .setIssuedAt(createdDate)
-            .setExpiration(expirationDate)
+//            .setExpiration(expirationDate)
             .signWith(SignatureAlgorithm.HS512, secret)
             .compact();
     }
@@ -112,7 +112,7 @@ public class JwtTokenUtil implements Serializable {
         //final Date expiration = getExpirationDateFromToken(token);
         return (
             username.equals(user.getUsername())
-                && !isTokenExpired(token)
+//                && !isTokenExpired(token)         // 是否忽略token过期
                 && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate())
         );
     }

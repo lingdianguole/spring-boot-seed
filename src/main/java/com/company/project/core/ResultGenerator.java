@@ -19,6 +19,13 @@ public class ResultGenerator {
                 .setData(data);
     }
 
+    public static <T> Result genSuccessResult(T data, String message) {
+        return new Result()
+                .setCode(ResultCode.SUCCESS)
+                .setMessage(message)
+                .setData(data);
+    }
+
     public static Result genFailResult(String message) {
         return new Result()
                 .setCode(ResultCode.FAIL)

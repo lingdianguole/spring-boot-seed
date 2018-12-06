@@ -3,7 +3,7 @@ package com.company.project.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -33,6 +33,15 @@ public class User {
 
     private Date registerDate;
     private Date updateDate;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public Date getUpdateDate() {
         return updateDate;

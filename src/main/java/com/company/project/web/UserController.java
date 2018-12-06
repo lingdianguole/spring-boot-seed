@@ -10,12 +10,14 @@ import com.company.project.model.MyPageInfo;
 import com.company.project.model.Phone;
 import com.company.project.model.User;
 import com.company.project.security.JwtTokenUtil;
+import com.company.project.security.JwtUser;
 import com.company.project.service.AuthorityService;
 import com.company.project.service.PhoneService;
 import com.company.project.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Condition;
@@ -23,6 +25,7 @@ import tk.mybatis.mapper.util.StringUtil;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +45,11 @@ public class UserController {
     private JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/register")
-    public Result add(User user) throws InterruptedException {
+    public Result add(User user) {
+        User curUser = userService.findBy("username", user.getUsername()); //精确查找username
+        if (curUser != null) {
+            return ResultGenerator.genSuccessResult("当前用户已注册注册");
+        }
         //把密码加密
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodePassword = encoder.encode(user.getPassword());
@@ -108,6 +115,9 @@ public class UserController {
 
     @PostMapping("/update")
     public Result update(User user) {
+        if (user.getUsername() != null) {
+            return ResultGenerator.genFailResult("不能修改用户名");
+        }
         userService.update(user);
         return ResultGenerator.genSuccessResult();
     }
@@ -115,6 +125,7 @@ public class UserController {
     @PostMapping("/detail")
     public Result detail(@RequestParam Integer id) {
         User user = userService.findById(id);
+        user.setToken(null); //设置成null转成json会过滤掉
         Condition condition = new Condition(Phone.class);
         condition.createCriteria().andCondition("userid =" + user.getId());
         condition.setOrderByClause("phoneid desc");
@@ -146,10 +157,11 @@ public class UserController {
         User currentUser = userService.findBy("username", user.getUsername());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (currentUser != null && encoder.matches(user.getPassword(), currentUser.getPassword())) {
-//          final String token = jwtTokenUtil.generateToken(currentUser);
+            String token = jwtTokenUtil.generateToken(new JwtUser(currentUser.getId(), currentUser.getUsername(), currentUser.getPassword(), null, true, new Date()));
             currentUser.setUpdateDate(new Date()); //更新登录时间
+            currentUser.setToken(token); //更新token
             userService.update(currentUser);
-            return ResultGenerator.genSuccessResult("登录成功");
+            return ResultGenerator.genSuccessResult(currentUser);
         }
         return ResultGenerator.genFailResult("账号或密码错误");
     }

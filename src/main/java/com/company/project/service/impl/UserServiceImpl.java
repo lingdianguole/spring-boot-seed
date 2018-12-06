@@ -31,4 +31,6 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     public User queryNickNameLike(String nickName) {
         return userMapper.queryNickNameLike(nickName);
     }
+
+
 }
