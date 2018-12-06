@@ -17,6 +17,7 @@ import com.company.project.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -155,6 +156,17 @@ public class UserController {
             return ResultGenerator.genFailResult("请输入密码");
         }
         User currentUser = userService.findBy("username", user.getUsername());
+        //获取权限
+        Condition condition = new Condition(Authority.class);
+        condition.createCriteria().andCondition("id=" + currentUser.getId());
+        List<Authority> authorities = authorService.findByCondition(condition);
+        currentUser.setAuthorities(authorities);
+        //获取手机号
+        condition.clear();
+        condition.createCriteria().andCondition("userid =" + currentUser.getId());
+        condition.setOrderByClause("phoneid desc");
+        List<Phone> phones = phoneService.findByCondition(condition);
+        currentUser.setPhone(phones);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (currentUser != null && encoder.matches(user.getPassword(), currentUser.getPassword())) {
             String token = jwtTokenUtil.generateToken(new JwtUser(currentUser.getId(), currentUser.getUsername(), currentUser.getPassword(), null, true, new Date()));
