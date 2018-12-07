@@ -2,6 +2,8 @@ package com.company.project.web;
 
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.company.project.configurer.DataSourceContextHolder;
+import com.company.project.configurer.DynamicSource;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.jwt.JwtToken;
@@ -104,8 +106,9 @@ public class UserController {
         return ResultGenerator.genSuccessResult(user);
     }
 
-
+    @DynamicSource(value = "user")
     public User findByUsername(@RequestParam String username) {
+        DataSourceContextHolder.setType("user");
         User user = userService.findBy("username", username);
         Condition condition = new Condition(Authority.class);
         condition.createCriteria().andCondition("id=" + user.getId());

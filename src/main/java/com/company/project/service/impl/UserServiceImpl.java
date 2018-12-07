@@ -1,5 +1,6 @@
 package com.company.project.service.impl;
 
+import com.company.project.configurer.DynamicSource;
 import com.company.project.dao.UserMapper;
 import com.company.project.model.User;
 import com.company.project.service.UserService;
@@ -21,7 +22,6 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     @Resource
     private UserMapper userMapper;
 
-
     @Override
     public List<User> queryForList() {
         return userMapper.queryForList();
@@ -32,5 +32,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         return userMapper.queryNickNameLike(nickName);
     }
 
-
+    @DynamicSource(value = "user")
+    @Override
+    public User findById(Integer id) {
+        return super.findById(id);
+    }
 }
